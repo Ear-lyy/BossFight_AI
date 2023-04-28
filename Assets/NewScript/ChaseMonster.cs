@@ -10,20 +10,31 @@ public class ChaseMonster : StateMachineBehaviour
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        player = GameObject.FindGameObjectWithTag("player").transform;
+        player = GameObject.FindGameObjectWithTag("Player").transform;
         agent = animator.GetComponent<NavMeshAgent>();
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        agent.destination = player.position;
-        if (agent.remainingDistance <= 5)
+        float distance = Vector3.Distance(player.position, animator.transform.position);
+        if (distance >= 10)
         {
+            agent.destination = player.position;
+        }
+        else if (distance < 3)
+        {
+            agent.destination = animator.transform.position;
             animator.SetBool("isMeleeAttacking", true);
             animator.SetBool("isChasing", false);
-
         }
+        else if (distance < 6)
+        {
+            agent.destination = animator.transform.position;
+            animator.SetBool("isRangeAttacking", true);
+            animator.SetBool("isChasing", false);
+        }
+
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state

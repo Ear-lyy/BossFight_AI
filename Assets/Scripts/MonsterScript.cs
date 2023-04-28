@@ -25,7 +25,6 @@ public class MonsterScript : MonoBehaviour
     public void playFX() 
     {
         bloodFx.Play();
-
     }
 
     public void DamagePlayer()
